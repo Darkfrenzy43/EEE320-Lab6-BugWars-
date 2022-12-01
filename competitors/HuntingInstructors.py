@@ -33,14 +33,17 @@ class Hunter(Creature):
         self.womb = None
 
     def do_turn(self):
+
+        print(f"\nStrength level = {self.strength()}");
+
         if not (self.cilia and self.type_sensor and self.womb):
             self.create_organs()
 
-        # else:
-        #     self.reproduce_if_able()
-        #     did_attack = self.find_someone_to_attack()
-        #     if not did_attack:
-        #         self.cilia.move_in_direction(Direction.random())
+        else:
+            self.reproduce_if_able()
+            did_attack = self.find_someone_to_attack()
+            if not did_attack:
+                self.cilia.move_in_direction(Direction.random())
 
     @classmethod
     def instance_count(cls):
@@ -63,7 +66,7 @@ class Hunter(Creature):
             for d in Direction:
                 nursery = self.type_sensor.sense(d)
                 if nursery == Soil or nursery == Plant:
-                    self.womb.give_birth(self.strength()/2, d)
+                    #self.womb.give_birth(self.strength()/2, d)
                     break
 
     def find_someone_to_attack(self):

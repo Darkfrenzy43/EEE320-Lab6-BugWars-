@@ -19,7 +19,8 @@ Group Members: Literally only OCdt Velasco.
 
         2 - Only way for us to gain strength is to find some of that green grass shit and eat it.
 
-        3 - Bugs commit suicide for what reason again?
+        3 - Bugs commit suicide when their strength hits 0.
+
 
     Status:
 
@@ -82,8 +83,6 @@ class Fode(Creature, ABC):
                 surroundings = self.energy_sensor.sense(d)
                 if surroundings == Soil or surroundings == Plant:
 
-                    print("Shit was sensed. ");
-
                     self.prop.give_birth(self.strength()/2, Direction.NE)
                     break;
 
@@ -94,8 +93,6 @@ class Fode(Creature, ABC):
 
     @classmethod
     def destroyed(cls):
-
-        print("SHIT WAS DESTROYED.");
 
         Fode.__instance_count -= 1;
 

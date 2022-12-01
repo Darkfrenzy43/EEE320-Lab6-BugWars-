@@ -22,7 +22,7 @@ from competitors.Velasco import Fode
 
 from framework import BugBattle
 
-WORLD_WIDTH = 10                                  # Was originally 100
+WORLD_WIDTH = 50                                  # Was originally 100
 COMPETITOR_CLASSES = (Hunter, SuperPlant, Fode)
 
 if __name__ == '__main__':
