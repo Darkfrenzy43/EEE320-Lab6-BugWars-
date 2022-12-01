@@ -59,5 +59,7 @@ class SuperPlant(Creature):
 
 class SuperPlantPropagator(Propagator):
 
+
     def make_child(self):
+
         return SuperPlant()

@@ -9,6 +9,8 @@ version 1.13
 Python implementation: Greg Phillips
 Based on an original design by Scott Knight and a series of
 implementations in C++ and Java by Scott Knight and Greg Phillips
+
+Group Members: Just OCdt Velasco lol
 """
 
 import random

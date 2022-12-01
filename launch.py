@@ -18,11 +18,12 @@ import tkinter as tk
 
 from competitors.HuntingInstructors import Hunter
 from competitors.AgrarianInstructors import SuperPlant
+from competitors.Velasco import Fode
 
 from framework import BugBattle
 
-WORLD_WIDTH = 100
-COMPETITOR_CLASSES = (Hunter, SuperPlant)
+WORLD_WIDTH = 10                                  # Was originally 100
+COMPETITOR_CLASSES = (Hunter, SuperPlant, Fode)
 
 if __name__ == '__main__':
     root = tk.Tk()

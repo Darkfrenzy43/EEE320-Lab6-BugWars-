@@ -35,11 +35,12 @@ class Hunter(Creature):
     def do_turn(self):
         if not (self.cilia and self.type_sensor and self.womb):
             self.create_organs()
-        else:
-            self.reproduce_if_able()
-            did_attack = self.find_someone_to_attack()
-            if not did_attack:
-                self.cilia.move_in_direction(Direction.random())
+
+        # else:
+        #     self.reproduce_if_able()
+        #     did_attack = self.find_someone_to_attack()
+        #     if not did_attack:
+        #         self.cilia.move_in_direction(Direction.random())
 
     @classmethod
     def instance_count(cls):
