@@ -30,10 +30,12 @@ Group Members: Literally only OCdt Velasco.
         - create energy sensor
 
 """
+
 from abc import ABC
 
 # Import stuff
-from shared import Creature, Cilia, Propagator, Direction, CreatureTypeSensor, Soil, Plant; # Import more here as needed
+from shared import Creature, Cilia, Propagator, Direction, CreatureTypeSensor, \
+    Soil, Plant, PhotoGland; # Import more here as needed
 
 class Fode(Creature, ABC):
     """ God someone please help me I'm finally on the last lab like yes this
@@ -44,6 +46,8 @@ class Fode(Creature, ABC):
     be more original, so I just took out the n and now we got "Fode". Based.
 
     """
+
+    round_counter = 0;
 
     # Creating static vars
     __instance_count = 0;
@@ -58,21 +62,47 @@ class Fode(Creature, ABC):
 
         # Creating the organ objects?
         self.cilia = None;
+        self.photog1 = None;
+        self.photog2 = None;
+        self.photog3 = None;
+        self.photog4 = None;
+        self.photog5 = None;
+        self.photog6 = None;
+        self.photog7 = None;
+        self.photog8 = None;
         self.prop = None;
         self.energy_sensor = None;
         self.type_sensor = None;
 
+
     def do_turn(self):
 
 
-
-        # simply create a cilia and womb if none was created yet (wtf is a cilia)
+        # creating the organs
         if not self.cilia and self.strength() > Cilia.CREATION_COST:
             self.cilia = Cilia(self);
         if not self.prop and self.strength() > Propagator.CREATION_COST:
             self.prop = FodePropagator(self);
         if not self.type_sensor and self.strength() > CreatureTypeSensor.CREATION_COST:
             self.energy_sensor = CreatureTypeSensor(self);
+        if not self.photog1 and self.strength() > PhotoGland.CREATION_COST:
+            self.photog1 = PhotoGland(self);
+        if not self.photog2 and self.strength() > PhotoGland.CREATION_COST:
+            self.photog2 = PhotoGland(self);
+        if not self.photog3 and self.strength() > PhotoGland.CREATION_COST:
+            self.photog3 = PhotoGland(self);
+        if not self.photog4 and self.strength() > PhotoGland.CREATION_COST:
+            self.photog4 = PhotoGland(self);
+        if not self.photog5 and self.strength() > PhotoGland.CREATION_COST:
+            self.photog5 = PhotoGland(self);
+        if not self.photog6 and self.strength() > PhotoGland.CREATION_COST:
+            self.photog6 = PhotoGland(self);
+        if not self.photog7 and self.strength() > PhotoGland.CREATION_COST:
+            self.photog7 = PhotoGland(self);
+        if not self.photog8 and self.strength() > PhotoGland.CREATION_COST:
+            self.photog8 = PhotoGland(self);
+
+
 
 
         # alright, let's reproduce the mother fucker
@@ -83,8 +113,10 @@ class Fode(Creature, ABC):
                 surroundings = self.energy_sensor.sense(d)
                 if surroundings == Soil or surroundings == Plant:
 
-                    self.prop.give_birth(self.strength()/2, Direction.NE)
+                    self.prop.give_birth(self.strength()/2, d)
                     break;
+
+
 
 
     @classmethod

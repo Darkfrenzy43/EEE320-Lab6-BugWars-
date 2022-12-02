@@ -66,7 +66,7 @@ class Hunter(Creature):
             for d in Direction:
                 nursery = self.type_sensor.sense(d)
                 if nursery == Soil or nursery == Plant:
-                    #self.womb.give_birth(self.strength()/2, d)
+                    self.womb.give_birth(self.strength()/2, d)
                     break
 
     def find_someone_to_attack(self):
