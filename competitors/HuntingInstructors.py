@@ -34,7 +34,6 @@ class Hunter(Creature):
 
     def do_turn(self):
 
-        print(f"\nStrength level = {self.strength()}");
 
         if not (self.cilia and self.type_sensor and self.womb):
             self.create_organs()
