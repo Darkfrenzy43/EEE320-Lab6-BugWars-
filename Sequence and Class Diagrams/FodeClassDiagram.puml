@@ -1,0 +1,150 @@
+@startuml
+!include style.puml
+
+
+
+
+title Bug Wars - Fode \n Class Diagram
+
+
+class ABC <<abstract>> {}
+
+class Propagator <<abstract>> {
+    CREATION_COST : int
+    MAINTENANCE_COST : int
+    USE_COST : int
+
+    give_birth(initial_energy : int, \ndirection : direction)
+    {abstract} make_child{()
+}
+
+
+class Creature <<abstract>> {
+    __MAX_STRENGTH : int
+    __MAINTENANCE_COST : int
+    __MAX_ORGANS : int
+    __DEAD_COLOUR = str
+
+    {abstract} do_turn()
+    {abstract} destroyed()
+    {abstract} instance_count()
+    strength() : int
+    is_alive() : bool
+    (...only framework methods \nfrom here on...)
+
+}
+
+class Fode {
+    {static} __instance_count : int
+
+    __init__()
+    {static} instance_count() : int
+    {static} destroyed()
+    do_turn()
+    grow_fode_organs()
+    move_fode()
+    make_more_fode()
+
+
+}
+
+class PhotoGland {
+    CREATION_COST : int
+    MAINTENANCE_COST : int
+}
+
+class FodePropagator {
+    make_child() : Fode()
+}
+
+
+class Cilia {
+    CREATION_COST : int
+    MAINTENANCE_COST : int
+    USE_COST : int
+
+    move_in_direction(bearing : Direction)
+}
+
+
+class CreatureTypeSensor {
+    F_DEFAULT_VALUE : Creature
+    CREATION_COST : int
+    MAINTENANCE_COST : int
+    USE_COST : int
+
+    sensor_value(target : Creature) \n: [['type']]
+}
+
+class Organ {
+
+    {field} (...Framework fields...)
+
+    __init__(host : Creature)
+    host() : Creature
+    creation_cost() : int
+    use_cost() : int
+    maintenance_cost() : int
+    (...rest are framework methods...)
+}
+
+class Sensor {
+    sense(direction : Direction)
+    {abstract} sensor_value(target : Creature)
+}
+
+
+class Direction {
+    {field} N : tuple(int)
+    {field} NE : tuple(int)
+    {field} E : tuple(int)
+    {field} SE : tuple(int)
+    {field} S : tuple(int)
+    {field} SW : tuple(int)
+    {field} W : tuple(int)
+    {field} NW : tuple(int)
+    dx : int
+    dy : int
+
+    __init__(dx : int, dy : int)
+    opposite() : Direction
+    {static} random() : Direction
+}
+
+
+class Enum {
+}
+
+
+' inheritance associations
+
+Creature --|> ABC
+Fode --|> ABC
+Sensor --|> ABC
+Organ --|> ABC
+Fode --|> Creature
+FodePropagator --|> Propagator
+Propagator --|> Organ
+Cilia --|> Organ
+CreatureTypeSensor --|> Sensor
+PhotoGland --|> Organ
+Sensor --|> Organ
+Propagator --|> ABC
+Direction --|> Enum
+
+
+' creation and use associations
+
+Fode ..> PhotoGland : <<creates>>
+Fode ..> CreatureTypeSensor : <<creates>>
+Fode ..> FodePropagator: <<creates>>
+Fode ..> Cilia : <<creates>>
+Fode ..> Direction : <<uses>>
+
+' has associations
+Fode --> "   1   " Cilia  : cilia
+Fode o--> "0..7" PhotoGland : glands
+Fode --> "   1   " CreatureTypeSensor : sensor
+Fode --> "  1  " FodePropagator : prop
+
+@enduml

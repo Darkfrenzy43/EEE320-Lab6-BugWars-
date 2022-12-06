@@ -101,9 +101,13 @@ class Fode(Creature, ABC):
         if not self.prop and self.strength() > Propagator.CREATION_COST:
             self.prop = FodePropagator(self)
 
-        if len(self.glands) < 7:
-            if self.strength() > PhotoGland.CREATION_COST:
+        while self.strength() > PhotoGland.CREATION_COST:
+            if len(self.glands) < 7:
                 self.glands.append(PhotoGland(self));
+            else:
+                break;
+
+
 
 
     def move_fode(self):

@@ -1,0 +1,93 @@
+@startuml
+!include style.puml
+
+title Bug Wars - Fode's do_turn() Sequence Diagram
+
+
+participant framework
+participant "fode_instance:\nFode" as fode
+participant "new_cilia:\nCilia" as cilia
+participant "new_sensor:\nCreatureTypeSensor" as sensor
+participant "new_prop:\nFodePropagator" as prop
+participant "new_gland:\nPhotoGland" as gland
+participant "glands:\nlist[PhotoGland]" as glands
+
+participant "cilia:\nCilia" as curr_cilia
+participant "prop:\nPropagator" as curr_prop
+participant "sensor:\nCreatureTypeSensor" as curr_sensor
+
+
+
+framework -> fode : do_turn()
+
+
+
+fode -> fode : grow_fode_organs()
+
+alt cilia == None and fode_instance.strength > Cilia.CREATION_COST
+    fode --> cilia ** : (fode_instance)
+    cilia -> fode : cilia = new_cilia
+end
+
+alt sensor == None and fode_instance.strength > CreatureTypeSensor.CREATION_COST
+    fode --> sensor ** : (fode_instance)
+    sensor -> fode : sensor = new_sensor
+end
+
+alt prop == None and fode_instance.strength > Propagator.CREATION_COST
+    fode --> prop ** : (fode_instance)
+    prop -> fode : prop = new_prop
+end
+
+alt len(self.glands) < 7
+
+    alt fode_instance.strength > PhotoGland.CREATION_COST
+
+        fode --> gland ** : (fode_instance)
+        fode -> glands : .append(new_gland)
+    end
+
+end
+
+
+
+fode -> fode : move_fode()
+
+alt fode_instance.strength > 0.2 * Creature.MAX_STRENGTH
+
+    fode -> curr_cilia : move_in_direction(random direction)
+
+end
+
+
+
+fode -> fode : make_more_fode()
+
+alt fode_instance.strength > 0.1 * Creature.MAX_STRENGTH
+
+
+    loop for d in Direction
+
+        fode -> curr_sensor : sense(d)
+        curr_sensor -> fode : return what was sensed
+
+        alt sensed Soil or Plant
+
+            fode -> curr_prop : give_birth(fode_instance.strength / 4, d)
+
+        else sensed an Enemy bug
+
+            alt fode_instance.strength >= 0.9 * Creature.MAX_STRENGTH
+
+                fode -> curr_prop : give_birth(fode_instance.strength / 2, d)
+
+            end
+
+        end
+
+    end
+
+end
+
+
+@enduml
