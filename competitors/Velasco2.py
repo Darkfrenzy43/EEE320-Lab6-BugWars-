@@ -1,61 +1,30 @@
 """
 
-OCdt Velasco's Creature (pls god save his soul omg im filling this thign with memes maybe idk it's been a long
-semester)
-
-Creature Name: Fode.
-Group Members: Literally only OCdt Velasco.
-
-
-    MAIN STRAT: maybe, we can make ours like an amoeba, and have it circle a bug? Or like an explosion kinda
-    deal, where we hold up all the power, and then we explode out and the opponent wouldn't be able to eat us since
-    we'd have more stored up? Defensive yet offensive gameplay
-
-
-    Notes:
-
-        1 - cls is used when referring to the entire class (static), and self is used in an instance
-        of the class (non-static)
-
-        2 - Only way for us to gain strength is to find some of that green grass shit and eat it.
-
-        3 - Bugs commit suicide when their strength hits 0.
-
-
-    Status:
-
-        - Implementing basic version of bug.
-        - make cracked up version of Fode.
-        - create environment and bug sensor
-        - create energy sensor
+Basically a copy of Fode.
 
 
 
 """
 
+
+
+
+# --- Importing files ---
+
 from abc import ABC
 
-
-# Import stuff
 from shared import Creature, Cilia, Propagator, Direction, CreatureTypeSensor, \
-    Soil, Plant, PhotoGland; # Import more here as needed
+    Soil, Plant, PhotoGland;
 
 
+
+# --- Class definition ---
 
 class Fode2(Creature, ABC):
-    """ God someone please help me I'm finally on the last lab like yes this
-    is finally happening it's been a really long semester but quick at the same time lmao.
+    """      'Fode is coming.' - Eric Cho (based)     """
 
-    This bug was named after OCdt Foden, who I asked if I should name my bug "Foden"
-    after he came up with a pretty cool name. Then I was like nahh it's gotta
-    be more original, so I just took out the n and now we got "Fode". Based.
-
-    """
-
-
-    # Creating static vars
+    # Creating required class attribute
     __instance_count = 0;
-
 
     def __init__(self):
 
@@ -65,90 +34,99 @@ class Fode2(Creature, ABC):
         # Increment instance count
         Fode2.__instance_count += 1;
 
-        # make an array which contains the organs of a given Fode
+        # instance vars for the Fode's organs
         self.cilia = None;
         self.sensor = None;
         self.prop = None;
         self.glands = [];
 
 
-    def grow_fode_organs(self):
+    @classmethod
+    def instance_count(cls):
+        return Fode2.__instance_count;
 
 
-        # First, do the cilia
-        if not self.cilia and self.strength() > Cilia.CREATION_COST:
-            self.cilia = Cilia(self)
-
-        # Next, sensor
-        if not self.sensor and self.strength() > CreatureTypeSensor.CREATION_COST:
-            self.sensor = CreatureTypeSensor(self)
-
-        # Create propagator
-        if not self.prop and self.strength() > Propagator.CREATION_COST:
-            self.prop = FodePropagator(self)
-
-
-        # Next, fill it up with photoglands to 7
-        if len(self.glands) < 7:
-
-            if self.strength() > PhotoGland.CREATION_COST:
-                self.glands.append(PhotoGland(self));
-
+    @classmethod
+    def destroyed(cls):
+        Fode2.__instance_count -= 1;
 
 
     def do_turn(self):
-
+        """ Is called every frame. Every turn we have, grow fode's organs, move fode around randomly,
+        and make more fode if we can manage it. """
 
         self.grow_fode_organs();
-
-         # Move fode around randomly
         self.move_fode();
+        self.make_more_fode();
 
-        # alright, let's reproduce the mother fucker
+
+    def grow_fode_organs(self):
+        """ Method grows Fode's organs in order of priority: cilia, then
+        creature sensor, then propagator, then finally fill up the rest with photoglands. """
+
+
+        if not self.cilia and self.strength() > Cilia.CREATION_COST:
+            self.cilia = Cilia(self)
+        if not self.sensor and self.strength() > CreatureTypeSensor.CREATION_COST:
+            self.sensor = CreatureTypeSensor(self)
+        if not self.prop and self.strength() > Propagator.CREATION_COST:
+            self.prop = FodePropagator(self)
+
+        if len(self.glands) < 7:
+            if self.strength() > PhotoGland.CREATION_COST:
+                self.glands.append(PhotoGland(self));
+
+        # The code below here is the latest modification that in fact makes Fode even stronger as it creates
+        # the photoglands even faster (creates more each turn). It's a shame I didn't realize this before the
+        # real competition lmao.
+        # while self.strength() > PhotoGland.CREATION_COST:
+        #     if len(self.glands) < 7:
+        #         self.glands.append(PhotoGland(self));
+        #     else:
+        #         break;
+
+
+
+
+    def move_fode(self):
+        """ Make's fode's cilia move around in a random direction. """
+
+        # Just move around if we have reasonable amount of energy to do so.
+        if self.strength() > 0.2 * Creature.MAX_STRENGTH:
+            self.cilia.move_in_direction(Direction.random());
+
+
+    def make_more_fode(self):
+        """ We make fode reproduce in a direction where there is soil or a plant, or make it reproduce
+        and attack an enemy if fode has enough strength to do so. """
+
+        # If we have at least 200 strength consider making fode reproduce onto soil or a plant
+        # (This should make it reproduce really damn fast. Cover as much ground as we can)
         if self.strength() >= 0.1 * Creature.MAX_STRENGTH:
 
+            # Find a direction where there is a plant or soil and repdouce
             for d in Direction:
+
                 surroundings = self.sensor.sense(d)
-
-
-
                 if surroundings == Soil or surroundings == Plant:
-
                     self.prop.give_birth(self.strength()/4, d)
                     break;
 
-                # Only spawn on an enemy if we have enough strength
+                # If we encounter an enemy, don't attack them unless we have enough strength.
+                # Give the attacking fode a bit more strength too.
                 elif surroundings != Soil and surroundings != Plant and surroundings != Fode2:
-
-                    if self.strength() >= 0.5 * Creature.MAX_STRENGTH:
+                    if self.strength() >= 0.9 * Creature.MAX_STRENGTH:
                         self.prop.give_birth(self.strength() / 2, d);
                         break;
 
 
 
-    def move_fode(self):
-
-        if self.strength() > 0.2 * Creature.MAX_STRENGTH:
-
-            self.cilia.move_in_direction(Direction.random());
-
-
-    @classmethod
-    def instance_count(cls):
-        return Fode2.__instance_count;
-
-    @classmethod
-    def destroyed(cls):
-
-        Fode2.__instance_count -= 1;
-
-
-
 class FodePropagator(Propagator):
+    """ Class that makes fode reproduce. """
 
     def make_child(self):
-
         return Fode2();
 
 
 
+# It's fode time.

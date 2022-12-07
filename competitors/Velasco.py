@@ -101,11 +101,18 @@ class Fode(Creature, ABC):
         if not self.prop and self.strength() > Propagator.CREATION_COST:
             self.prop = FodePropagator(self)
 
-        while self.strength() > PhotoGland.CREATION_COST:
-            if len(self.glands) < 7:
+        if len(self.glands) < 7:
+            if self.strength() > PhotoGland.CREATION_COST:
                 self.glands.append(PhotoGland(self));
-            else:
-                break;
+
+        # The code below here is the latest modification that in fact makes Fode even stronger as it creates
+        # the photoglands even faster (creates more each turn). It's a shame I didn't realize this before the
+        # real competition lmao.
+        # while self.strength() > PhotoGland.CREATION_COST:
+        #     if len(self.glands) < 7:
+        #         self.glands.append(PhotoGland(self));
+        #     else:
+        #         break;
 
 
 

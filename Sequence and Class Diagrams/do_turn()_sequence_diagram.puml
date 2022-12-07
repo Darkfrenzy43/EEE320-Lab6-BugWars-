@@ -41,11 +41,25 @@ end
 
 alt len(self.glands) < 7
 
+
+
     alt fode_instance.strength > PhotoGland.CREATION_COST
+
+
 
         fode --> gland ** : (fode_instance)
         fode -> glands : .append(new_gland)
     end
+
+    note right
+            I recently realized that
+            I could have improved Fode
+            if I had placed a loop
+            here which creates as many
+            photoglands as we can for
+            the turn rather than creating
+            only one each turn. Lol oh well.
+    end note
 
 end
 
