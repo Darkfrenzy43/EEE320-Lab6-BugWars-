@@ -108,6 +108,7 @@ class Fode(Creature, ABC):
         # The code below here is the latest modification that in fact makes Fode even stronger as it creates
         # the photoglands even faster (creates more each turn). It's a shame I didn't realize this before the
         # real competition lmao.
+        #
         # while self.strength() > PhotoGland.CREATION_COST:
         #     if len(self.glands) < 7:
         #         self.glands.append(PhotoGland(self));

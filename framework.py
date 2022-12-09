@@ -266,7 +266,6 @@ class Simulation:
         else:
             self.tps = 4
         self.last_start = start
-
     def grow_initial_plants(self):
         for soil in self.world.locations:
             if random.random() < self.INITIAL_PLANT_PROBABILITY:
